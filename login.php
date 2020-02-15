@@ -20,7 +20,7 @@ if (isset($_SESSION['blog_login'])) :
     exit();
 endif;
 
-if (isset($_COOKIE['blog_username']) && isset($_COOKIE['blog_password'])) :
+if (isset($_COOKIE['blog_username']) and isset($_COOKIE['blog_password'])) :
     $username = $_COOKIE['blog_username'];
     $password = $_COOKIE['blog_password'];
     $auth = login_validate($username, $password);
@@ -33,7 +33,9 @@ if (isset($_COOKIE['blog_username']) && isset($_COOKIE['blog_password'])) :
 endif;
 
 if (isset($_POST['submit'])) :
-    if (isset($_POST['username']) && isset($_POST['password'])) :
+    if (!isset($_POST['username']) or !isset($_POST['password'])) :
+        $auth['message'] = "Something went wrong...";
+    else :
         $username = $_POST['username'];
         $password = $_POST['password'];
 
@@ -58,8 +60,13 @@ if (isset($_POST['submit'])) :
                 exit();
             endif;
         endif;
-    else :
-        $auth['message'] = "Something went wrong...";
+    endif;
+endif;
+
+if (isset($_GET['signup'])) :
+    if ($_GET['signup'] === "success") :
+        $auth['message'] = "Signup Success";
+        $auth['message_class'] = "text-success";
     endif;
 endif;
 
@@ -109,7 +116,7 @@ endif;
                     </div>
                 </form>
                 <div class="d-flex justify-centent-center">
-                    <p class="text-danger mx-auto mt-4"><?php echo (isset($auth['message'])) ? $auth['message'] : "" ?></p>
+                    <p class="<?= (isset($auth['message_class'])) ? $auth['message_class'] : "text-danger" ?> mx-auto mt-4"><?= (isset($auth['message'])) ? $auth['message'] : "" ?></p>
                 </div>
                 <div class="dropdown-divider mb-4 mt-3"></div>
                 <div class="d-flex justify-centent-center">

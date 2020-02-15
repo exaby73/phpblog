@@ -20,7 +20,7 @@ if (isset($_SESSION['blog_login'])) :
     exit();
 endif;
 
-if (isset($_COOKIE['blog_username']) && isset($_COOKIE['blog_password'])) :
+if (isset($_COOKIE['blog_username']) and isset($_COOKIE['blog_password'])) :
     $username = $_COOKIE['blog_username'];
     $password = $_COOKIE['blog_password'];
     $auth = login_validate($username, $password);
@@ -33,6 +33,62 @@ if (isset($_COOKIE['blog_username']) && isset($_COOKIE['blog_password'])) :
 endif;
 
 if (isset($_POST['submit'])) :
+    if (
+        !isset($_POST['first_name'])
+        or !isset($_POST['last_name'])
+        or !isset($_POST['username'])
+        or !isset($_POST['email'])
+        or !isset($_POST['password'])
+        or !isset($_POST['confirm_password'])
+    ) :
+        $auth['message'] = "Something went wrong...";
+    else :
+        // Check if any field is empty and generate a user friendly message
+        foreach ($_POST as $key => $value) :
+            if ($key === "submit") :
+                continue;
+            endif;
+            if (empty($_POST[$key])) :
+                $message = "";
+
+                $field_names = explode("_", $key);
+                foreach ($field_names as $field) :
+                    $message .= ucfirst($field) . " ";
+                endforeach;
+
+                $message .= "is required";
+                $auth['message'] = $message;
+
+                break;
+            else :
+                if ($key === "password" or $key === "confirm_password") :
+                    continue;
+                endif;
+                $auth[$key] = $value;
+            endif;
+        endforeach;
+
+        if (!isset($auth['message'])) :
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $confirm_password = $_POST['confirm_password'];
+
+            $auth = signup_validate($first_name, $last_name, $username, $email, $password, $confirm_password);
+
+            if ($auth['validate']) :
+                $sql_query = "INSERT INTO users (username, first_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql_query);
+                $stmt->execute([$username, $first_name, $last_name, $email, password_hash($password, PASSWORD_BCRYPT)]);
+                header("Location: login?signup=success");
+                exit();
+            endif;
+        endif;
+
+    endif;
+
 endif;
 
 ?>
@@ -63,37 +119,37 @@ endif;
                     <h3 class="card-title">Signup</h3>
                 </div>
                 <div class="dropdown-divider my-3"></div>
-                <form action="login" method="POST">
+                <form action="signup" method="POST">
                     <div class="form-group mt-4">
                         <label for="first_name">First Name</label>
-                        <input type="text" class="form-control" name="first_name" id="first_name">
+                        <input type="text" class="form-control" name="first_name" id="first_name" value="<?= (isset($auth['first_name'])) ? $auth['first_name'] : "" ?>">
                     </div>
                     <div class="form-group mt-4">
                         <label for="last_name">Last Name</label>
-                        <input type="text" class="form-control" name="last_name" id="last_name">
+                        <input type="text" class="form-control" name="last_name" id="last_name" value="<?= (isset($auth['last_name'])) ? $auth['last_name'] : "" ?>">
                     </div>
                     <div class="form-group mt-4">
                         <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" id="username">
+                        <input type="text" class="form-control" name="username" id="username" value="<?= (isset($auth['username'])) ? $auth['username'] : "" ?>">
                     </div>
                     <div class="form-group mt-4">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" name="email" id="email">
+                        <input type="text" class="form-control" name="email" id="email" value="<?= (isset($auth['email'])) ? $auth['email'] : "" ?>">
                     </div>
                     <div class="form-group mt-4">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password">
+                        <input type="password" class="form-control" name="password" id="password" value="<?= (isset($auth['password'])) ? $auth['password'] : "" ?>">
                     </div>
                     <div class="form-group mt-4">
                         <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" name="confirm_password" id="confirm_password">
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="<?= (isset($auth['confirm_password'])) ? $auth['confirm_password'] : "" ?>">
                     </div>
                     <div class="form-group">
                         <button type="submit" name="submit" class="btn btn-purple mt-4 btn-block">Signup</button>
                     </div>
                 </form>
                 <div class="d-flex justify-centent-center">
-                    <p class="text-danger mx-auto mt-4"><? (isset($auth['message'])) ? $auth['message'] : "" ?></p>
+                    <p class="text-danger mx-auto mt-4"><?= (isset($auth['message'])) ? $auth['message'] : "" ?></p>
                 </div>
                 <div class="dropdown-divider mb-4 mt-3"></div>
                 <div class="d-flex justify-centent-center">
