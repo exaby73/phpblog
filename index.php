@@ -12,6 +12,9 @@ define("URL_INCLUDE", "{$_SERVER['DOCUMENT_ROOT']}/wbp-project");
 define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}/wbp-project");
 
 require_once(URL_INCLUDE . "/include/connect.php");
+require_once(URL_INCLUDE . "/include/helper_functions.php");
+
+require_once(URL_INCLUDE . "/vendor/autoload.php");
 session_start();
 
 // Not logged in redirect...
@@ -22,6 +25,8 @@ endif;
 // Get recent posts
 $sql_query = "SELECT * FROM posts ORDER BY date_created DESC LIMIT 100";
 $posts = $conn->query($sql_query);
+
+$markdown = new Parsedown();
 ?>
 
 <!doctype html>
@@ -56,64 +61,27 @@ $posts = $conn->query($sql_query);
 
                 <?php
 
-                // Parse date into human readable format
-                $date_data = explode("-", $post['date_created']);
-                $date = "{$date_data[2]} ";
-
-                switch ($date_data[1]):
-                    case "01":
-                        $date .= "Jan, ";
-                        break;
-                    case "02":
-                        $date .= "Feb, ";
-                        break;
-                    case "03":
-                        $date .= "Mar, ";
-                        break;
-                    case "04":
-                        $date .= "Apr, ";
-                        break;
-                    case "05":
-                        $date .= "May, ";
-                        break;
-                    case "06":
-                        $date .= "Jun, ";
-                        break;
-                    case "07":
-                        $date .= "Jul, ";
-                        break;
-                    case "08":
-                        $date .= "Aug, ";
-                        break;
-                    case "09":
-                        $date .= "Sep, ";
-                        break;
-                    case "10":
-                        $date .= "Oct, ";
-                        break;
-                    case "11":
-                        $date .= "Nov, ";
-                        break;
-                    case "12":
-                        $date .= "Dec, ";
-                        break;
-                endswitch;
-
-                $date .= $date_data['0'];
+                $date = format_date($post['date_created']);
 
                 // Get username of user_id in post
-                $sql_query = "SELECT username FROM users WHERE id={$post['user_id']}";
-                $user = $conn->query($sql_query);
-                $user = $user->fetch(PDO::FETCH_ASSOC);
-                $user = $user['username'];
+                $sql_query = "SELECT id, username FROM users WHERE id={$post['user_id']}";
+                $stmt = $conn->query($sql_query);
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $id = $row['id'];
+                $user = $row['username'];
 
                 ?>
 
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title"><?= $post['title'] ?></h3>
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title"><?= $post['title'] ?></h3>
+                            <?php if ($_SESSION['blog_id'] == $id) : ?>
+                                <a href="<?= URL_HREF . "/edit?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center h-50">Edit</a>
+                            <?php endif ?>
+                        </div>
                         <div class="dropdown-divider"></div>
-                        <p class="card-text"><?= $post['body'] ?></p>
+                        <div class="card-text"><?= $markdown->text($post['body']) ?></div>
                         <div class="dropdown-divider"></div>
                         <div class="d-flex justify-content-between">
                             <em><?= $date ?></em>

@@ -19,7 +19,7 @@ function login_validate($username, $password)
         return ['validate' => false, 'message' => "Incorrect password", 'username' => $username];
     endif;
 
-    return ['validate' => true];
+    return ['validate' => true, 'user_id' => $user['id']];
 }
 
 function signup_validate($first_name, $last_name, $username, $email, $password, $password_copy)

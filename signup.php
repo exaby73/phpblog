@@ -69,12 +69,12 @@ if (isset($_POST['submit'])) :
         endforeach;
 
         if (!isset($auth['message'])) :
-            $first_name = $_POST['first_name'];
-            $last_name = $_POST['last_name'];
-            $username = $_POST['username'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $confirm_password = $_POST['confirm_password'];
+            $first_name = trim($_POST['first_name']);
+            $last_name = trim($_POST['last_name']);
+            $username = trim($_POST['username']);
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+            $confirm_password = trim($_POST['confirm_password']);
 
             $auth = signup_validate($first_name, $last_name, $username, $email, $password, $confirm_password);
 
@@ -119,7 +119,7 @@ endif;
                     <h3 class="card-title">Signup</h3>
                 </div>
                 <div class="dropdown-divider my-3"></div>
-                <form action="signup" method="POST">
+                <form action="<?= URL_HREF . "/signup" ?>" method="POST">
                     <div class="form-group mt-4">
                         <label for="first_name">First Name</label>
                         <input type="text" class="form-control" name="first_name" id="first_name" value="<?= (isset($auth['first_name'])) ? $auth['first_name'] : "" ?>">
