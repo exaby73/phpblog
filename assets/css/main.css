@@ -1,0 +1,82 @@
+.nav {
+  background-color: #ffffff00;
+  border-radius: 0.5vh;
+  box-shadow: 0 0 10px #00000040;
+  height: 5em;
+  margin: 1.5em;
+  padding: 0 1em 0 1em;
+}
+
+.container {
+  width: 90%;
+}
+
+.navbar-brand,
+.navbar-brand:hover {
+  color: rgb(100, 43, 133);
+  font-weight: bolder;
+  font-style: italic;
+  font-size: 2.5em;
+  margin-right: 0;
+  margin-left: 0.5em;
+}
+
+.user-profile {
+  height: 3em;
+  width: 3em;
+  margin-right: 1em;
+  object-fit: cover;
+}
+
+.color-green {
+  color: #72dca9;
+}
+
+.color-blue {
+  color: #5faaee;
+}
+
+.card {
+  border-radius: 0.5vh;
+  margin-bottom: 1em;
+}
+
+.card-title {
+  font-weight: bolder;
+}
+
+.card-text {
+  font-size: medium;
+}
+
+.btn-purple,
+.btn-purple:hover {
+  background-color: rgb(100, 43, 133);
+  color: white;
+}
+
+.form-group {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.card-link {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 425px) {
+  .navbar-brand,
+  .navbar-brand:hover {
+    font-size: 2em;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .user-profile {
+    height: 2.5em;
+    width: 2.5em;
+    object-fit: cover;
+  }
+}
