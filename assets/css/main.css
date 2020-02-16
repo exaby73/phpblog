@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
 .nav {
   background-color: #ffffff00;
   border-radius: 0.5vh;
@@ -9,6 +15,10 @@
 
 .container {
   width: 90%;
+}
+
+img {
+  max-width: 100%;
 }
 
 .navbar-brand,
@@ -64,13 +74,13 @@
   margin: 0 auto;
 }
 
-.card-text {
+.card-text-list-item {
   max-height: 20em;
   overflow: hidden;
   position: relative;
 }
 
-.card-text::after {
+.card-text-list-item::after {
   position: absolute;
   bottom: 0;
   height: 100%;

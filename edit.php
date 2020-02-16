@@ -1,21 +1,6 @@
 <?php
 
-/*
-    URL_INCLUDE -> Holds absolute file path to root of document 
-        echo in PHP include and require statements
-
-    URL_HREF -> Holds http link to root of document
-        echo in client-side HTML/JS such as href attributes
-*/
-
-$local_dev = getenv('LOCAL');
-
-define("URL_INCLUDE", "{$_SERVER['DOCUMENT_ROOT']}");
-if ($local_dev == "true") :
-    define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}");
-else :
-    define("URL_HREF", "https://{$_SERVER['HTTP_HOST']}");
-endif;
+require_once("./include/urls.php");
 
 require_once(URL_INCLUDE . "/include/connect.php");
 require_once(URL_INCLUDE . "/include/validate.php");
@@ -28,7 +13,7 @@ if (!isset($_SESSION['blog_login'])) :
 endif;
 
 if (!isset($_GET['id'])) :
-    header("Location: 404");
+    header("Location: 404?noid");
     exit();
 else :
     $post_id = $_GET['id'];
@@ -38,13 +23,13 @@ else :
     $stmt->execute([$post_id]);
 
     if ($stmt->rowCount() === 0) :
-        header("Location: 404");
+        header("Location: 404?rowcount");
         exit();
     else :
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row['user_id'] !== $_SESSION['blog_id']) :
-            header("Location: 404");
+            header("Location: 404?user");
             exit();
         endif;
 
@@ -83,7 +68,7 @@ if (isset($_POST['submit'])) :
             $stmt = $conn->prepare($sql_query);
             $stmt->execute([$title, $body]);
 
-            header("Location: index");
+            header("Location: /view?id=$post_id");
             exit();
         endif;
     endif;
@@ -119,19 +104,19 @@ endif;
                 </div>
                 <div class="dropdown-divider my-3"></div>
                 <form action="<?= URL_HREF . "/edit?id=$post_id" ?>" method="POST">
-                    <div class="form-group mt-4">
+                    <div class="mt-4">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" name="title" id="title" value="<?= (isset($auth['title'])) ? $auth['title'] : $title ?>">
                     </div>
-                    <div class="form-group mt-4">
+                    <div class="mt-4">
                         <label for="body">Body</label>
-                        <textarea class="form-control" name="body" id="body" rows="5"><?= (isset($auth['body'])) ? $auth['body'] : $body ?></textarea>
+                        <textarea class="form-control" name="body" id="body" rows="20" wrap="soft"><?= (isset($auth['body'])) ? $auth['body'] : $body ?></textarea>
                     </div>
-                    <div class="form-group mt-4">
+                    <div class="mt-4">
                         <label for="date_created">Date Created</label>
                         <p id="date_created"><?= format_date($date_created) ?></p>
                     </div>
-                    <div class="form-group mt-4">
+                    <div class="mt-4">
                         <label for="author">Author</label>
                         <p id="author"><?= $author ?></p>
                     </div>

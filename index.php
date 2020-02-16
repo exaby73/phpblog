@@ -1,21 +1,6 @@
 <?php
 
-/*
-    URL_INCLUDE -> Holds absolute file path to root of document 
-        echo in PHP include and require statements
-
-    URL_HREF -> Holds http link to root of document
-        echo in client-side HTML/JS such as href attributes
-*/
-
-$local_dev = getenv('LOCAL');
-
-define("URL_INCLUDE", "{$_SERVER['DOCUMENT_ROOT']}");
-if ($local_dev == "true") :
-    define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}");
-else :
-    define("URL_HREF", "https://{$_SERVER['HTTP_HOST']}");
-endif;
+require_once("./include/urls.php");
 
 require_once(URL_INCLUDE . "/include/connect.php");
 require_once(URL_INCLUDE . "/include/helper_functions.php");
@@ -71,11 +56,11 @@ $markdown = new Parsedown();
                 $date = format_date($post['date_created']);
 
                 // Get username of user_id in post
-                $sql_query = "SELECT id, username FROM users WHERE id={$post['user_id']}";
+                $sql_query = "SELECT id, first_name, last_name FROM users WHERE id={$post['user_id']}";
                 $stmt = $conn->query($sql_query);
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $id = $row['id'];
-                $user = $row['username'];
+                $user = "{$row['first_name']} {$row['last_name']}";
 
                 ?>
 
@@ -83,12 +68,15 @@ $markdown = new Parsedown();
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title"><?= $post['title'] ?></h3>
-                            <?php if ($_SESSION['blog_id'] == $id) : ?>
-                                <a href="<?= URL_HREF . "/edit?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center h-50">Edit</a>
-                            <?php endif ?>
+                            <div class="btn-group h-50">
+                                <a href="<?= URL_HREF . "/view?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center">View</a>
+                                <?php if ($_SESSION['blog_id'] == $id) : ?>
+                                    <a href="<?= URL_HREF . "/edit?id={$post['id']}" ?>" class="btn btn-warning d-flex align-items-center">Edit</a>
+                                <?php endif ?>
+                            </div>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <div class="card-text"><?= $markdown->text($post['body']) ?></div>
+                        <div class="card-text card-text-list-item"><?= $markdown->text($post['body']) ?></div>
                         <div class="dropdown-divider"></div>
                         <div class="d-flex justify-content-between">
                             <em><?= $date ?></em>

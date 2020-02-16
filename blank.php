@@ -1,27 +1,17 @@
 <?php
 
-/*
-    URL_INCLUDE -> Holds absolute file path to root of document 
-        echo in PHP include and require statements
-
-    URL_HREF -> Holds http link to root of document
-        echo in client-side HTML/JS such as href attributes
-*/
-
-$local_dev = getenv('LOCAL');
-
-define("URL_INCLUDE", "{$_SERVER['DOCUMENT_ROOT']}");
-if ($local_dev == "true") :
-    define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}");
-else :
-    define("URL_HREF", "https://{$_SERVER['HTTP_HOST']}");
-endif;
+require_once("./include/urls.php");
 
 require_once(URL_INCLUDE . "/include/connect.php");
 session_start();
 
+// Not logged in redirect...
+if (!isset($_SESSION['blog_login'])) :
+    header("Location: login");
+endif;
+
 // Remove following code when reusing this code
-header("Location: 404");
+header("Location: 404?error=blank_page");
 exit();
 
 ?>
