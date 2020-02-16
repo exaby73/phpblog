@@ -94,6 +94,7 @@ endif;
 <body>
 
     <?php include_once(URL_INCLUDE . "/include/nav.php") ?>
+    <?= var_dump(isset($_SERVER['HTTPS'])) ?>
 
     <div class="container">
         <div class="card border-0">
