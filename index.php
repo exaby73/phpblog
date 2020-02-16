@@ -47,6 +47,7 @@ $markdown = new Parsedown();
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="shortcut icon" href="<?= URL_HREF . "/favicon.ico" ?>">
     <link rel="stylesheet" href="<?= URL_HREF . "/assets/css/main.css" ?>">
 </head>
 
