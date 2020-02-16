@@ -8,7 +8,7 @@
         echo in client-side HTML/JS such as href attributes
 */
 
-define("URL_INCLUDE", "/");
+define("URL_INCLUDE", "/app");
 define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}/");
 
 require_once(URL_INCLUDE . "/include/connect.php");
