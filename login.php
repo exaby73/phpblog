@@ -9,7 +9,7 @@
 */
 
 define("URL_INCLUDE", "{$_SERVER['DOCUMENT_ROOT']}/");
-define("URL_HREF", "http://{$_SERVER['HTTP_HOST']}/");
+define("URL_HREF", "https://{$_SERVER['HTTP_HOST']}/");
 
 require_once(URL_INCLUDE . "/include/connect.php");
 require_once(URL_INCLUDE . "/include/validate.php");
