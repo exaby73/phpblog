@@ -14,5 +14,5 @@ $dsn = "pgsql:host=$dbhost;port=5432;dbname=$dbname;user=$dbuser;password=$dbpas
 try {
     $conn = new PDO($dsn);
 } catch (PDOException $e) {
-    echo $e->getMessage();
+    // echo $e->getMessage();
 }

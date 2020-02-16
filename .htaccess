@@ -12,3 +12,5 @@ RewriteRule ^(.*)$ $1.html [NC,L]
 
 # redirect on status codes:
 ErrorDocument 404 /wbp-project/404
+
+php_flag display_errors off
