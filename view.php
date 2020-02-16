@@ -74,17 +74,17 @@ $markdown = new Parsedown();
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
                     <h3 class="card-title"><?= $title ?></h3>
                     <?php if ($_SESSION['blog_id'] == $id) : ?>
-                        <a href="<?= URL_HREF . "/edit?id=$post_id" ?>" class="btn btn-purple d-flex align-items-center">Edit</a>
+                        <a href="<?= URL_HREF . "/edit?id=$post_id" ?>" class="btn btn-purple d-flex align-items-center h-50">Edit</a>
                     <?php endif ?>
                 </div>
                 <div class="dropdown-divider"></div>
                 <div class="card-text"><?= $markdown->text($body) ?></div>
                 <div class="dropdown-divider"></div>
                 <div class="d-flex justify-content-between">
-                    <em><?= $date_created ?></em>
+                    <em><?= format_date($date_created) ?></em>
                     <em>- <?= $author ?></em>
                 </div>
             </div>

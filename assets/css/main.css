@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Merriweather&display=swap");
 
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Merriweather", serif;
 }
 
 .nav {
@@ -18,7 +18,8 @@
 }
 
 img {
-  max-width: 100%;
+  max-width: 96%;
+  margin: 2%;
 }
 
 .navbar-brand,
@@ -53,6 +54,7 @@ img {
 
 .card-title {
   font-weight: bolder;
+  font-size: 3rem;
 }
 
 .card-text {
@@ -67,7 +69,7 @@ img {
 
 .form-group {
   width: 50%;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .card-link {

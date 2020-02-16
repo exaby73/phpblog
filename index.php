@@ -66,7 +66,7 @@ $markdown = new Parsedown();
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center">
                             <h3 class="card-title"><?= $post['title'] ?></h3>
                             <div class="btn-group h-50">
                                 <a href="<?= URL_HREF . "/view?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center">View</a>
