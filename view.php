@@ -34,7 +34,7 @@ else :
         $date_created = $row['date_created'];
         $user_id = $row['user_id'];
 
-        $sql_query = "SELECT id, first_name, last_name FROM users WHERE id=$user_id";
+        $sql_query = "SELECT id, first_name, last_name, username FROM users WHERE id=$user_id";
         $query = $conn->query($sql_query);
 
         $row = $query->fetch(PDO::FETCH_ASSOC);
@@ -42,6 +42,7 @@ else :
         $id = $row['id'];
         $first_name = $row['first_name'];
         $last_name = $row['last_name'];
+        $username = $row['username'];
 
         $author = "$first_name $last_name";
     endif;
@@ -55,7 +56,7 @@ $markdown = new Parsedown();
 <html lang="en">
 
 <head>
-    <title>Blog | Home</title>
+    <title>Blog | View Post</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -75,7 +76,7 @@ $markdown = new Parsedown();
         <div class="card">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="card-title"><?= $title ?></h3>
+                    <h1 class="card-title"><?= $title ?></h1>
                     <?php if ($_SESSION['blog_id'] == $id) : ?>
                         <a href="<?= URL_HREF . "/edit?id=$post_id" ?>" class="btn btn-purple d-flex align-items-center h-50">Edit</a>
                     <?php endif ?>
@@ -85,7 +86,7 @@ $markdown = new Parsedown();
                 <div class="dropdown-divider"></div>
                 <div class="d-flex justify-content-between">
                     <em><?= format_date($date_created) ?></em>
-                    <em>- <?= $author ?></em>
+                    <em>- <?= $author ?><span class="text-muted">@<?= $username ?></span></em>
                 </div>
             </div>
         </div>

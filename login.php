@@ -20,12 +20,12 @@ if (isset($_COOKIE['blog_username']) and isset($_COOKIE['blog_password']) and is
     if ($auth['validate']) :
         $_SESSION['blog_login'] = true;
         $_SESSION['blog_id'] = $id;
-        header("Location: index?blog-id=" . $_SESSION['blog_id']);
+        header("Location: index");
         exit();
     endif;
 endif;
 
-if (isset($_POST['submit'])) :
+if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] == "POST") :
     if (!isset($_POST['username']) or !isset($_POST['password'])) :
         $auth['message'] = "Something went wrong...";
     else :
@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) :
 
                 $_SESSION['blog_login'] = true;
                 $_SESSION['blog_id'] = $auth['user_id'];
-                header("Location: index?id=" . $auth['user_id']);
+                header("Location: index");
                 exit();
             endif;
         endif;

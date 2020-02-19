@@ -13,7 +13,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profile-dropdown">
-                    <a href="<?php echo URL_HREF . "/new-post/" ?>" class="dropdown-item">Create Post</a>
+                    <a href="<?php echo URL_HREF . "/create" ?>" class="dropdown-item">Create Post</a>
                     <a class="dropdown-item" href="#">Profile</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo URL_HREF . "/logout" ?>">Logout</a>

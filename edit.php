@@ -38,19 +38,20 @@ else :
         $date_created = $row['date_created'];
         $user_id = $row['user_id'];
 
-        $sql_query = "SELECT first_name, last_name FROM users WHERE id=$user_id";
+        $sql_query = "SELECT first_name, last_name, username FROM users WHERE id=$user_id";
         $query = $conn->query($sql_query);
 
         $row = $query->fetch(PDO::FETCH_ASSOC);
 
         $first_name = $row['first_name'];
         $last_name = $row['last_name'];
+        $username = $row['username'];
 
         $author = "$first_name $last_name";
     endif;
 endif;
 
-if (isset($_POST['submit'])) :
+if (isset($_POST['submit']) and $_SERVER['REQUEST_METHOD'] == "POST") :
     if (!isset($_POST['title']) or !isset($_POST['body'])) :
         $auth['message'] = "Something went wrong...";
     else :
@@ -64,9 +65,9 @@ if (isset($_POST['submit'])) :
             $auth['message'] = "Body is required";
             $auth['title'] = $title;
         else :
-            $sql_query = "UPDATE posts SET title=?, body=? WHERE id=$post_id";
+            $sql_query = "UPDATE posts SET title=:title, body=:body WHERE id=$post_id";
             $stmt = $conn->prepare($sql_query);
-            $stmt->execute([$title, $body]);
+            $stmt->execute(['title' => $title, 'body' => $body]);
 
             header("Location: /view?id=$post_id");
             exit();
@@ -118,7 +119,7 @@ endif;
                     </div>
                     <div class="mt-4">
                         <label for="author">Author</label>
-                        <p id="author"><?= $author ?></p>
+                        <p id="author"><?= $author ?><em><span class="text-muted">@<?= $username ?></span></em></p>
                     </div>
                     <div class="form-group">
                         <button type="submit" name="submit" class="btn btn-purple mt-4 btn-block">Submit</button>

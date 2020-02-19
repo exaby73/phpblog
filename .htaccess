@@ -11,6 +11,6 @@ RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^(.*)$ $1.html [NC,L]
 
 # redirect on status codes:
-ErrorDocument 404 /wbp-project/404
+ErrorDocument 404 /404
 
 # php_flag display_errors off

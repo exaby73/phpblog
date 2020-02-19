@@ -4,6 +4,11 @@
   font-family: "Merriweather", serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .nav {
   background-color: #ffffff00;
   border-radius: 0.5vh;
@@ -52,10 +57,9 @@ img {
   margin-bottom: 1em;
 }
 
-.card-title {
-  font-weight: bolder;
-  font-size: 3rem;
-}
+/* .card-title {
+  font-weight: bold;
+} */
 
 .card-text {
   font-size: medium;

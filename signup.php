@@ -23,7 +23,7 @@ if (isset($_COOKIE['blog_username']) and isset($_COOKIE['blog_password'])) :
     endif;
 endif;
 
-if (isset($_POST['submit'])) :
+if (isset($_POST['submit']) and $_SERVER['REQUEST_METHOD'] == "POST") :
     if (
         !isset($_POST['first_name'])
         or !isset($_POST['last_name'])

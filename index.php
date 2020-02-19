@@ -12,12 +12,12 @@ session_start();
 if (!isset($_SESSION['blog_login'])) :
     header("Location: login");
 endif;
-
 // Get recent posts
 $sql_query = "SELECT * FROM posts ORDER BY date_created DESC LIMIT 100";
 $posts = $conn->query($sql_query);
 
 $markdown = new Parsedown();
+
 ?>
 
 <!doctype html>
@@ -56,22 +56,23 @@ $markdown = new Parsedown();
                 $date = format_date($post['date_created']);
 
                 // Get username of user_id in post
-                $sql_query = "SELECT id, first_name, last_name FROM users WHERE id={$post['user_id']}";
+                $sql_query = "SELECT id, first_name, last_name, username FROM users WHERE id={$post['user_id']}";
                 $stmt = $conn->query($sql_query);
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 $id = $row['id'];
                 $user = "{$row['first_name']} {$row['last_name']}";
+                $username = $row['username'];
 
                 ?>
 
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="card-title"><?= $post['title'] ?></h3>
+                            <h1 class="card-title"><a href="<?= URL_HREF . "/view?id={$post['id']}" ?>" class="d-flex align-items-center"><?= $post['title'] ?></a></h1>
                             <div class="btn-group h-50">
-                                <a href="<?= URL_HREF . "/view?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center">View</a>
+
                                 <?php if ($_SESSION['blog_id'] == $id) : ?>
-                                    <a href="<?= URL_HREF . "/edit?id={$post['id']}" ?>" class="btn btn-warning d-flex align-items-center">Edit</a>
+                                    <a href="<?= URL_HREF . "/edit?id={$post['id']}" ?>" class="btn btn-purple d-flex align-items-center">Edit</a>
                                 <?php endif ?>
                             </div>
                         </div>
@@ -80,7 +81,7 @@ $markdown = new Parsedown();
                         <div class="dropdown-divider"></div>
                         <div class="d-flex justify-content-between">
                             <em><?= $date ?></em>
-                            <em>- <?= $user ?></em>
+                            <em>- <?= $user ?><span class="text-muted">@<?= $username ?></span></em>
                         </div>
                     </div>
                 </div>
